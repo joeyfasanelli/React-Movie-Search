@@ -1,6 +1,5 @@
 
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 // WE IMPORT OUR COMPONENTS
 import MovieDisplay from "./components/MovieDisplay";
@@ -9,9 +8,24 @@ import Form from "./components/Form";
 function App() {
   //variable with your apiKey
   const apiKey = "98e3fb1f";
+  const wordArr = ['flower', 'love', 'star',]
 
   //State to hold movie data
   const [movie, setMovie] = React.useState(null);
+
+
+  //Function to get a Random movie
+  const getRandomMovie = async (searchTerm) => {
+    let randomIndex = Math.floor(Math.random()*wordArr.length)
+    let randomWord = wordArr[randomIndex]
+    console.log(randomWord)
+    const response = await fetch(
+      `http://www.omdbapi.com/?apikey=${apiKey}&t=${randomWord}`
+    );
+    const data = await response.json();
+    setMovie(data);
+  };
+
 
   //Function to getMovies
   const getMovie = async (searchTerm) => {
@@ -27,7 +41,7 @@ function App() {
 
   //This will run on the first render but not on subsquent renders
   React.useEffect(() => {
-    getMovie("Clueless");
+    getRandomMovie("The Godfather");
   }, []);
 
   // USE OUR COMPONENTS IN APPs RETURNED JSX
